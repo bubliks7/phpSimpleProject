@@ -24,7 +24,6 @@
             <label for="email">Email: </label>
             <input type="email" name="email" id="email">
         </div>
-
         <div>
             <label for="imie">Imie: </label>
             <input type="text" name="imie" id="imie">
@@ -45,7 +44,6 @@
         </div>
     </form>
     <?php 
-
         $conn = mysqli_connect("localhost","root","","polaczenie");
 
         if(!$conn){
@@ -72,6 +70,8 @@
                 echo "Uzupelnij wszystkie pola!";
             }
         }
+            
     ?>
 </body>
+
 </html>
