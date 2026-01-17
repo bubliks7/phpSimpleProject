@@ -24,6 +24,7 @@
             <label for="email">Email: </label>
             <input type="email" name="email" id="email">
         </div>
+
         <div>
             <label for="imie">Imie: </label>
             <input type="text" name="imie" id="imie">
@@ -44,6 +45,7 @@
         </div>
     </form>
     <?php 
+
         $conn = mysqli_connect("localhost","root","","polaczenie");
 
         if(!$conn){
@@ -59,19 +61,32 @@
             $wiek = $_POST["wiek"] ?? '';
             
             if($login !== '' && $haslo !== '' && $email !== '' && $imie !== '' && $nazwisko !== '' && $wiek !== ''){
-                $sql = "INSERT INTO polaczenie (login, haslo, email, imie, nazwisko, wiek) VALUES ('$login', '$haslo', '$email', '$imie', '$nazwisko', '$wiek')";
 
-                if(mysqli_query($conn, $sql)){
-                    echo"Dodano uzytkownika";
+                $check = mysqli_query($conn, "SELECT id FROM polaczenie WHERE login = '" . $login . "'");
+
+                if(mysqli_num_rows($check) > 0){
+                    echo"login jest zajety";
                 } else{
-                    echo "Błąd: " . mysqli_error($conn);
-                }
+                     $sql = "INSERT INTO polaczenie (login, haslo, email, imie, nazwisko, wiek) VALUES ('$login', '$haslo', '$email', '$imie', '$nazwisko', '$wiek')";
+
+                    if(mysqli_query($conn, $sql)){
+                        echo"Dodano uzytkownika";
+                    } else{
+                        echo "Błąd: " . mysqli_error($conn);
+                    }
+                    $result = mysqli_query($conn, "SELECT * FROM polaczenie WHERE login = '" . $login . "'");
+                    while($row = mysqli_fetch_assoc($result)){
+                        echo "<br> Login: " . $row["login"] . "<br>";
+                        echo "Email: " . $row["email"] . "<br>";
+                        echo "Imie: " . $row["imie"] . "<br>";
+                        echo "Nazwisko: " . $row["nazwisko"] . "<br>";
+                        echo "Wiek: " . $row["wiek"] . "<br>";
+                    }
+                }  
             } else{
                 echo "Uzupelnij wszystkie pola!";
             }
         }
-            
     ?>
 </body>
-
 </html>
